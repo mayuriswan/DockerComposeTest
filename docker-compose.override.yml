@@ -1,0 +1,24 @@
+version: '3.4'
+
+services:
+  testdockercompose:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5000;http://+:5001
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  books.database:
+    image: postgres:latest
+    container_name: books.database
+    environment:
+        - POSTGRES_DB=books
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    volumes:
+        - ./.containers/books-db:/var/lib/postgresql/data
+    ports:
+        - 5432:5432
